@@ -83,7 +83,8 @@ class Interact:
     def add(self):
         self._p_messages.add(self._prompt_for_line("message"),
                              self._username,
-                             self._prompt_for_line("date"))
+                             self._prompt_for_line("date"),
+                             self._prompt_for_line("privilege"))
 
     ##################################################
     # INTERACT :: UPDATE
@@ -91,10 +92,15 @@ class Interact:
     ################################################## 
     def update(self):
         id_ = self._prompt_for_id("update")
-        if not self._p_messages.show(id_):
-            print(f"ERROR! Message ID \'{id_}\' does not exist\n")
-            return
-        self._p_messages.update(id_, self._prompt_for_line("message"))
+        message = self._p_messages.get_message(id_) # use id get message for checking
+
+        if control.canWrite(self._user.level, message.get_privilege()):
+            if not self._p_messages.show(id_):
+                print(f"ERROR! Message ID \'{id_}\' does not exist\n")
+                return
+            self._p_messages.update(id_, self._prompt_for_line("message"))
+        else:
+            print("Access denied")
         print()
             
     ##################################################
