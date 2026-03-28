@@ -7,7 +7,7 @@
 #    This class stores the notion of a message
 ########################################################################
 
-import control
+from . import control
 
 ##################################################
 # MESSAGE
